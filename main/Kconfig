@@ -1,0 +1,84 @@
+menu "Sample"
+
+choice SAMPLE
+    prompt "Which sample to build"
+    default SAMPLE_RC522
+    help
+        Only the selected sample is compiled. Each one lives in main/samples/
+        and provides sample_run().
+
+config SAMPLE_HELLO
+    bool "hello"
+    help
+        Print a line once a second.
+
+config SAMPLE_BLINK
+    bool "blink"
+    help
+        Toggle one GPIO. Set the pin below to a free output on your board.
+
+config SAMPLE_RC522
+    bool "rc522"
+    help
+        Talk to an MFRC522 over SPI. Print the chip version, then the
+        ATQA, UID, and one MIFARE Classic sector (factory key A).
+
+endchoice
+
+config SAMPLE_BLINK_GPIO
+    int "Blink GPIO number"
+    depends on SAMPLE_BLINK
+    default 2
+    range 0 54
+    help
+        GPIO to drive as a push-pull output. Default 2 is only a placeholder;
+        pick a pin that is not strapped, not the USB console, and not wired
+        to something that must stay idle.
+
+config SAMPLE_RC522_SCK
+    int "RC522 SCK GPIO"
+    depends on SAMPLE_RC522
+    default 8
+    range 0 54
+    help
+        SPI clock. Defaults are placeholders on free GPIOs; match them to
+        the wires on your board.
+
+config SAMPLE_RC522_MOSI
+    int "RC522 MOSI GPIO"
+    depends on SAMPLE_RC522
+    default 9
+    range 0 54
+
+config SAMPLE_RC522_MISO
+    int "RC522 MISO GPIO"
+    depends on SAMPLE_RC522
+    default 10
+    range 0 54
+
+config SAMPLE_RC522_CS
+    int "RC522 CS GPIO"
+    depends on SAMPLE_RC522
+    default 11
+    range 0 54
+    help
+        Chip select, active low. On the usual module this pin is labeled SDA.
+
+config SAMPLE_RC522_RST
+    int "RC522 RST GPIO"
+    depends on SAMPLE_RC522
+    default 12
+    range 0 54
+    help
+        Reset, active low. Leave the module IRQ pin unconnected.
+
+config SAMPLE_RC522_SECTOR
+    int "MIFARE sector to read"
+    depends on SAMPLE_RC522
+    default 0
+    range 0 15
+    help
+        Classic 1K sector. All four 16-byte blocks are read after
+        authenticating with key A FF FF FF FF FF FF.
+
+endmenu

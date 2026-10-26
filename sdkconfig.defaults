@@ -1,0 +1,21 @@
+# ESP32-P4 rev >= 3.0 (Function EV / CB v3.2). A fresh tree picks this up, so
+# `idf.py build` does not fall back to the Xtensa esp32 target.
+CONFIG_IDF_TARGET="esp32p4"
+CONFIG_ESP32P4_SELECTS_REV_LESS_V3=n
+CONFIG_ESP32P4_REV_MIN_300=y
+
+# This board has 16 MB flash. The default 2 MB table still fits these samples,
+# but esptool should be told the real size.
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+
+# Same USB port used for flashing. GPIO 37/38 stay free.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
+# Which sample is linked. menuconfig -> Sample, or change this line.
+CONFIG_SAMPLE_RC522=y
+CONFIG_SAMPLE_RC522_SCK=8
+CONFIG_SAMPLE_RC522_MOSI=9
+CONFIG_SAMPLE_RC522_MISO=10
+CONFIG_SAMPLE_RC522_CS=11
+CONFIG_SAMPLE_RC522_RST=12
+CONFIG_SAMPLE_RC522_SECTOR=0
