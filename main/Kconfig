@@ -2,7 +2,7 @@ menu "Sample"
 
 choice SAMPLE
     prompt "Which sample to build"
-    default SAMPLE_RC522
+    default SAMPLE_MPU6050
     help
         Only the selected sample is compiled. Each one lives in main/samples/
         and provides sample_run().
@@ -22,6 +22,12 @@ config SAMPLE_RC522
     help
         Talk to an MFRC522 over SPI. Print the chip version, then the
         ATQA, UID, and one MIFARE Classic sector (factory key A).
+
+config SAMPLE_MPU6050
+    bool "mpu6050"
+    help
+        Read an MPU6050 over I2C. Print WHO_AM_I, then acceleration,
+        rotation, and temperature.
 
 endchoice
 
@@ -80,5 +86,29 @@ config SAMPLE_RC522_SECTOR
     help
         Classic 1K sector. All four 16-byte blocks are read after
         authenticating with key A FF FF FF FF FF FF.
+
+config SAMPLE_MPU6050_SDA
+    int "MPU6050 SDA GPIO"
+    depends on SAMPLE_MPU6050
+    default 4
+    range 0 54
+    help
+        I2C data. Defaults are placeholders on free GPIOs.
+
+config SAMPLE_MPU6050_SCL
+    int "MPU6050 SCL GPIO"
+    depends on SAMPLE_MPU6050
+    default 5
+    range 0 54
+    help
+        I2C clock.
+
+config SAMPLE_MPU6050_ADDR
+    hex "MPU6050 I2C address"
+    depends on SAMPLE_MPU6050
+    default 0x68
+    range 0x08 0x77
+    help
+        7-bit address. 0x68 when AD0 is grounded, 0x69 when AD0 is high.
 
 endmenu
