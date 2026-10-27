@@ -2,7 +2,7 @@ menu "Sample"
 
 choice SAMPLE
     prompt "Which sample to build"
-    default SAMPLE_MPU6050
+    default SAMPLE_BMP280
     help
         Only the selected sample is compiled. Each one lives in main/samples/
         and provides sample_run().
@@ -28,6 +28,14 @@ config SAMPLE_MPU6050
     help
         Read an MPU6050 over I2C. Print WHO_AM_I, then acceleration,
         rotation, and temperature.
+
+config SAMPLE_BMP280
+    bool "bmp280"
+    help
+        Read a BMP280 over I2C. Print the chip id, temperature,
+        pressure, and an altitude estimated from 1013.25 hPa.
+        Use the local weather station's current pressure as the
+        baseline, or the altitude will be wrong.
 
 endchoice
 
@@ -110,5 +118,30 @@ config SAMPLE_MPU6050_ADDR
     range 0x08 0x77
     help
         7-bit address. 0x68 when AD0 is grounded, 0x69 when AD0 is high.
+
+config SAMPLE_BMP280_SDA
+    int "BMP280 SDA GPIO"
+    depends on SAMPLE_BMP280
+    default 8
+    range 0 54
+    help
+        I2C data. Defaults match the pins used by the MPU6050 sample.
+
+config SAMPLE_BMP280_SCL
+    int "BMP280 SCL GPIO"
+    depends on SAMPLE_BMP280
+    default 9
+    range 0 54
+    help
+        I2C clock.
+
+config SAMPLE_BMP280_ADDR
+    hex "BMP280 I2C address"
+    depends on SAMPLE_BMP280
+    default 0x76
+    range 0x08 0x77
+    help
+        7-bit address. 0x76 when SDO is grounded, 0x77 when SDO is high.
+        CSB must stay high for I2C mode.
 
 endmenu
